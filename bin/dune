@@ -1,0 +1,4 @@
+(executable
+ (public_name moore_machine)
+ (name main)
+ (libraries moore_machine))
