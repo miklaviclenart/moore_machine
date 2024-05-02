@@ -14,7 +14,7 @@ let empty_machine initial_state output =
     initial_state;
     accepting_states = [];
     transitions = [];
-    outputs = [ (initial_state, output) ]
+    outputs = [ (initial_state, output) ];
   }
 
 let add_nonaccepting_state state machine =
@@ -43,12 +43,9 @@ let transition_function machine state char =
   | Some (_, _, stanje2) -> Some stanje2
 
 let output_function machine state =
-  match
-    List.find_opt (fun (state', _) -> state' = state)
-    machine.outputs
-  with
-  | None -> failwith("Output is not defined for this state")
-  | Some(_, char) -> char
+  match List.find_opt (fun (state', _) -> state' = state) machine.outputs with
+  | None -> failwith "Output is not defined for this state"
+  | Some (_, char) -> char
 
 let initial_state machine = machine.initial_state
 let state_list machine = machine.states

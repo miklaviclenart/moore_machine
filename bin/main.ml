@@ -24,18 +24,18 @@ let read_string machine q string =
   string |> String.to_seq |> Seq.fold_left aux (Some q)
 
 let update model = function
-   | ReadString str -> (
-       match read_string model.machine model.machine_state str with
-       | None -> { model with ui_state = IncorrectStringWarning }
-       | Some machine_state ->
-           { model with machine_state; ui_state = ReadStringResult })
-   | ChangeUI ui_state -> { model with ui_state }
-   | ReturnToInitialState ->
-       {
-         model with
-         machine_state = Machine.initial_state model.machine;
-         ui_state = OptionList;
-       }
+  | ReadString str -> (
+      match read_string model.machine model.machine_state str with
+      | None -> { model with ui_state = IncorrectStringWarning }
+      | Some machine_state ->
+          { model with machine_state; ui_state = ReadStringResult })
+  | ChangeUI ui_state -> { model with ui_state }
+  | ReturnToInitialState ->
+      {
+        model with
+        machine_state = Machine.initial_state model.machine;
+        ui_state = OptionList;
+      }
 
 let rec print_options () =
   print_endline "1) izpiši avtomat";
@@ -98,15 +98,15 @@ let ones_1mod3 =
   let q0 = State.from_string "q0"
   and q1 = State.from_string "q1"
   and q2 = State.from_string "q2" in
-  Machine.empty_machine q0 '0' 
+  Machine.empty_machine q0 '0'
   |> Machine.add_accepting_state q1
   |> Machine.add_accepting_state q2
-  |> Machine.add_transition q0 '0' q0 
-  |> Machine.add_transition q1 '0' q1 
+  |> Machine.add_transition q0 '0' q0
+  |> Machine.add_transition q1 '0' q1
   |> Machine.add_transition q2 '0' q2
-  |> Machine.add_transition q0 '1' q1 
-  |> Machine.add_transition q1 '1' q2 
-  |> Machine.add_transition q2 '1' q0 
+  |> Machine.add_transition q0 '1' q1
+  |> Machine.add_transition q1 '1' q2
+  |> Machine.add_transition q2 '1' q0
 
 let rec loop model =
   let msg = view model in

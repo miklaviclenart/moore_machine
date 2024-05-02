@@ -4,8 +4,7 @@ let run machine tape = { machine; tape; state = Machine.initial_state machine }
 let machine { machine; _ } = machine
 let tape { tape; _ } = tape
 let state { state; _ } = state
-let output machine =
-  Machine.output_function machine.machine machine.state
+let output machine = Machine.output_function machine.machine machine.state
 
 let step_forward { machine; tape; state } =
   if Tape.is_at_end tape then None
