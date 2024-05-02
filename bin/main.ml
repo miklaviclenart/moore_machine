@@ -50,18 +50,29 @@ let rec print_options () =
       print_endline "** VNESI 1, 2 ALI 3 **";
       print_options ()
 
-let print_machine machine =
-  let print_state state =
-    let screen = State.to_string state in
-    let screen =
-      if state = Machine.initial_state machine then "-> " ^ screen else screen
+let print_machine (m : Machine.t) : unit =
+  let print_transitions_for_state state =
+    let transitions =
+      List.filter (fun (s, _, _) -> s = state) (Machine.transition_list m)
     in
-    let screen =
-      if Machine.is_accepting_state machine state then screen ^ " +" else screen
-    in
-    print_endline screen
+    List.iter
+      (fun (_, event, next_state) ->
+        Printf.printf "        %c -> %s\n" event (State.to_string next_state))
+      transitions
   in
-  List.iter print_state (Machine.state_list machine)
+  List.iter
+    (fun state ->
+      Printf.printf "Stanje: %s\n" (State.to_string state);
+      if List.exists (fun s -> s = state) (Machine.state_list m) then
+        Printf.printf "   - Je sprejemno stanje: DA\n"
+      else Printf.printf "   - Je sprejemno stanje: NE\n";
+      List.iter
+        (fun (s, e) ->
+          if s = state then Printf.printf "   - Izhod: %s\n" (String.make 1 e))
+        (Machine.output_list m);
+      Printf.printf "   - Prehodi:\n";
+      print_transitions_for_state state)
+    (Machine.state_list m)
 
 let read_string _model =
   print_string "Vnesi niz > ";
