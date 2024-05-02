@@ -18,20 +18,52 @@ let empty_machine initial_state =
   }
 
 let add_nonaccepting_state state machine =
-  { machine with states = state :: machine.states }
+  if List.mem state machine.states then machine
+  else { machine with states = state :: machine.states }
 
 let add_accepting_state state machine =
-  {
-    machine with
-    states = state :: machine.states;
-    accepting_states = state :: machine.accepting_states;
-  }
+  if List.mem state machine.states && List.mem state machine.accepting_states
+  then machine
+  else if List.mem state machine.states then
+    { machine with accepting_states = state :: machine.accepting_states }
+  else
+    {
+      machine with
+      states = state :: machine.states;
+      accepting_states = state :: machine.accepting_states;
+    }
 
+(* Če ima avtomat za vnešeno stanje in vhod že dodan prehod, ga funkcija izbriše in nadomesti z novim. *)
 let add_transition state1 char state2 machine =
-  { machine with transitions = (state1, char, state2) :: machine.transitions }
+  match
+    List.find_opt
+      (fun (state1', char', _state2') -> state1 = state1' && char = char')
+      machine.transitions
+  with
+  | None ->
+      {
+        machine with
+        transitions = (state1, char, state2) :: machine.transitions;
+      }
+  | Some (state1', char', state2') ->
+      let new_transitions =
+        List.filter
+          (fun (s, c, s0) -> (state1', char', state2') <> (s, c, s0))
+          machine.transitions
+      in
+      { machine with transitions = (state1, char, state2) :: new_transitions }
 
-let add_output state char machine =
-  { machine with outputs = (state, char) :: machine.outputs }
+(* Če ima vnešeno stanje že izhod, ga izbriše in zapiše vnešenega. *)
+let add_output state string machine =
+  match
+    List.find_opt (fun (state', _string) -> state = state') machine.outputs
+  with
+  | None -> { machine with outputs = (state, string) :: machine.outputs }
+  | Some (state', string') ->
+      let new_outputs =
+        List.filter (fun (s, o) -> (state', string') <> (s, o)) machine.outputs
+      in
+      { machine with outputs = (state, string) :: new_outputs }
 
 let transition_function machine state char =
   match
