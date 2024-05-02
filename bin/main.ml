@@ -50,7 +50,7 @@ let rec print_options () =
       print_endline "** VNESI 1, 2 ALI 3 **";
       print_options ()
 
-let print_machine (m : Machine.t) : unit =
+let print_machine m =
   let print_transitions_for_state state =
     let transitions =
       List.filter (fun (s, _, _) -> s = state) (Machine.transition_list m)
@@ -67,8 +67,7 @@ let print_machine (m : Machine.t) : unit =
         Printf.printf "   - Je sprejemno stanje: DA\n"
       else Printf.printf "   - Je sprejemno stanje: NE\n";
       List.iter
-        (fun (s, e) ->
-          if s = state then Printf.printf "   - Izhod: %s\n" (String.make 1 e))
+        (fun (s, e) -> if s = state then Printf.printf "   - Izhod: %s\n" e)
         (Machine.output_list m);
       Printf.printf "   - Prehodi:\n";
       print_transitions_for_state state)
@@ -109,7 +108,7 @@ let ones_1mod3 =
   let q0 = State.from_string "q0"
   and q1 = State.from_string "q1"
   and q2 = State.from_string "q2" in
-  Machine.empty_machine q0 '0'
+  Machine.empty_machine q0
   |> Machine.add_accepting_state q1
   |> Machine.add_accepting_state q2
   |> Machine.add_transition q0 '0' q0

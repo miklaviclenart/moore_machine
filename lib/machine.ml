@@ -5,16 +5,16 @@ type t = {
   initial_state : state;
   accepting_states : state list;
   transitions : (state * char * state) list;
-  outputs : (state * char) list;
+  outputs : (state * string) list;
 }
 
-let empty_machine initial_state output =
+let empty_machine initial_state =
   {
     states = [ initial_state ];
     initial_state;
     accepting_states = [];
     transitions = [];
-    outputs = [ (initial_state, output) ];
+    outputs = [];
   }
 
 let add_nonaccepting_state state machine =
@@ -44,8 +44,8 @@ let transition_function machine state char =
 
 let output_function machine state =
   match List.find_opt (fun (state', _) -> state' = state) machine.outputs with
-  | None -> failwith "Output is not defined for this state"
-  | Some (_, char) -> char
+  | None -> None
+  | Some (_, char) -> Some char
 
 let initial_state machine = machine.initial_state
 let state_list machine = machine.states
