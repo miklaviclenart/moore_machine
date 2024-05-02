@@ -1,5 +1,0 @@
-# dune promote
-# OCAMLPARAM: unset
-# Shared cache: disabled
-# Shared cache location: /home/lenart/.cache/dune/db
-# Workspace root: /home/lenart/Desktop/moore_machine
