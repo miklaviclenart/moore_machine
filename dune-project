@@ -13,6 +13,6 @@
  (name moore_machine)
  (synopsis "Mooreovi avtomati")
  (description "Projektno delo pri predmetu Programiranje 1")
- (depends ocaml dune))
+ (depends ocaml dune yojson))
 
 ; See the complete stanza docs at https://dune.readthedocs.io/en/stable/dune-files.html#dune-project

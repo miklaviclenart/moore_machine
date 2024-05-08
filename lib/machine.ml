@@ -91,3 +91,6 @@ let read_string machine q string =
     match acc with None -> None | Some q -> transition_function machine q char
   in
   string |> String.to_seq |> Seq.fold_left aux (Some q)
+
+let build_machine states initial_state accepting_states transitions outputs =
+  { states; initial_state; accepting_states; transitions; outputs }

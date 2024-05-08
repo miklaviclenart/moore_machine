@@ -1,0 +1,16 @@
+{
+    "name": "Turnstile",
+    "states": [ "zaklenjeno", "odklenjeno" ],
+    "initial_state": "zaklenjeno",
+    "accepting_states": [ "zaklenjeno", "odklenjeno" ],
+    "transitions": [
+        {"from": "zaklenjeno", "to": "zaklenjeno", "input": "p"},
+        {"from": "zaklenjeno", "to": "odklenjeno", "input": "k"},
+        {"from": "odklenjeno", "to": "odklenjeno", "input": "k"},
+        {"from": "odklenjeno", "to": "zaklenjeno", "input": "p"}
+    ],
+    "outputs": [
+        { "state": "zaklenjeno", "output": "Vstavite kovanec: 'k'"},
+        { "state": "odklenjeno", "output": "Potisnite: 'p'"}
+    ]
+}

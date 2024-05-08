@@ -14,3 +14,11 @@ val accepting_state_list : t -> State.t list
 val output_list : t -> (State.t * string) list
 val is_accepting_state : t -> State.t -> bool
 val read_string : t -> State.t -> string -> State.t option
+
+val build_machine :
+  State.t list ->
+  State.t ->
+  State.t list ->
+  (State.t * char * State.t) list ->
+  (State.t * string) list ->
+  t

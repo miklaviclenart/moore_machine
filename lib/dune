@@ -1,2 +1,3 @@
 (library
- (name moore_machine))
+ (name moore_machine)
+ (libraries yojson))

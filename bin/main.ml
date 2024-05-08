@@ -37,6 +37,12 @@ let update model = function
         ui_state = OptionList;
       }
 
+let print_state model =
+  Printf.printf "Trenutno stanje: %s\n" (State.to_string model.machine_state);
+  match Machine.output_function model.machine model.machine_state with
+  | None -> ()
+  | Some s -> Printf.printf "Izhod: %s\n\n" s
+
 let rec print_options () =
   print_endline "1) izpiši avtomat";
   print_endline "2) beri znake";
@@ -63,7 +69,7 @@ let print_machine m =
   List.iter
     (fun state ->
       Printf.printf "Stanje: %s\n" (State.to_string state);
-      if List.exists (fun s -> s = state) (Machine.state_list m) then
+      if List.exists (fun s -> s = state) (Machine.accepting_state_list m) then
         Printf.printf "   - Je sprejemno stanje: DA\n"
       else Printf.printf "   - Je sprejemno stanje: NE\n";
       List.iter
@@ -80,12 +86,14 @@ let read_string _model =
 
 let print_result model =
   if Machine.is_accepting_state model.machine model.machine_state then
-    print_endline "Niz je bil sprejet"
-  else print_endline "Niz ni bil sprejet"
+    print_endline "Niz je bil sprejet\n"
+  else print_endline "Niz ni bil sprejet\n"
 
 let view model =
   match model.ui_state with
-  | OptionList -> print_options ()
+  | OptionList ->
+      print_state model;
+      print_options ()
   | ShowMachine ->
       print_machine model.machine;
       ChangeUI OptionList
@@ -104,23 +112,35 @@ let init machine =
     ui_state = OptionList;
   }
 
-let ones_1mod3 =
-  let q0 = State.from_string "q0"
-  and q1 = State.from_string "q1"
-  and q2 = State.from_string "q2" in
-  Machine.empty_machine q0
-  |> Machine.add_accepting_state q1
-  |> Machine.add_accepting_state q2
-  |> Machine.add_transition q0 '0' q0
-  |> Machine.add_transition q1 '0' q1
-  |> Machine.add_transition q2 '0' q2
-  |> Machine.add_transition q0 '1' q1
-  |> Machine.add_transition q1 '1' q2
-  |> Machine.add_transition q2 '1' q0
-
 let rec loop model =
   let msg = view model in
   let model' = update model msg in
   loop model'
 
-let _ = loop (init ones_1mod3)
+let rec print_menu () =
+  print_endline "1) zaženi avtomat";
+  print_endline "2) pokaži shranjene avtomate";
+  print_string "> ";
+  match read_line () with
+  | "1" -> (
+      print_endline "Vnesi ime avtomata";
+      print_string "> ";
+      let name = read_line () in
+      try loop (init (From_json.machine_from_json ("examples/" ^ name ^ ".json")));
+      with Sys_error _msg ->
+        print_endline "Avtomat s tem imenom ne obstaja.";
+        print_endline "Vnesite '2', da si ogledate že definirane intervale.";
+        print_menu ())
+  | "2" ->
+      print_endline "";
+      let files = Sys.readdir "examples" in
+      Array.iter (fun file ->
+        let filename = Filename.remove_extension file in
+        Printf.printf "%s\n" filename) files;
+      print_endline "";
+      print_menu ()
+  | _ ->
+      print_endline "** VNESI 1, 2 ALI 3 **";
+      print_menu ()
+
+let _ = print_menu ()
