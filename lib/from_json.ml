@@ -1,3 +1,7 @@
+(* Ta datoteka poskrbi za branje primerov iz `.json` datotek.
+ * Kodo spodaj sem napisal s pomočjo https://dev.realworldocaml.org/json.html *)
+
+(* Knjižnica Yojson za delo z `JSON` datotekami. *)
 open Yojson.Basic.Util
 
 let from_file name = Yojson.Basic.from_file name

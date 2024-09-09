@@ -1,3 +1,4 @@
+(* Enake definicije kot na predavanjih. *)
 type t = { string : string; index_of_current_char : int }
 
 let from_string string = { string; index_of_current_char = 0 }

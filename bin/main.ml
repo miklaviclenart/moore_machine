@@ -120,13 +120,15 @@ let rec loop model =
 let rec print_menu () =
   print_endline "1) zaženi avtomat";
   print_endline "2) pokaži shranjene avtomate";
+  print_endline "3) izhod";
   print_string "> ";
   match read_line () with
   | "1" -> (
       print_endline "Vnesi ime avtomata";
       print_string "> ";
       let name = read_line () in
-      try loop (init (From_json.machine_from_json ("examples/" ^ name ^ ".json")));
+      try
+        loop (init (From_json.machine_from_json ("examples/" ^ name ^ ".json")))
       with Sys_error _msg ->
         print_endline "Avtomat s tem imenom ne obstaja.";
         print_endline "Vnesite '2', da si ogledate že definirane intervale.";
@@ -134,11 +136,14 @@ let rec print_menu () =
   | "2" ->
       print_endline "";
       let files = Sys.readdir "examples" in
-      Array.iter (fun file ->
-        let filename = Filename.remove_extension file in
-        Printf.printf "%s\n" filename) files;
+      Array.iter
+        (fun file ->
+          let filename = Filename.remove_extension file in
+          Printf.printf "%s\n" filename)
+        files;
       print_endline "";
       print_menu ()
+  | "3" -> print_endline "Nasvidanje!"; exit 0
   | _ ->
       print_endline "** VNESI 1, 2 ALI 3 **";
       print_menu ()

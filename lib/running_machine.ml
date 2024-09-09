@@ -4,6 +4,8 @@ let run machine tape = { machine; tape; state = Machine.initial_state machine }
 let machine { machine; _ } = machine
 let tape { tape; _ } = tape
 let state { state; _ } = state
+
+(** [output machine] vrne opcijo izhoda [string option] avtomata [machine] v trenutnem stanju. *)
 let output machine = Machine.output_function machine.machine machine.state
 
 let step_forward { machine; tape; state } =
