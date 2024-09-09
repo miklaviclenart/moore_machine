@@ -4,15 +4,15 @@ Projektno vsebuje implementacijo Mooreovih avtomatov, ki razširja implementacij
 
 ## Matematična definicija
 
-Mooreov avtomat je definiran kot nabor $ (\Sigma, Q, q_0, F, \delta, O, G) $, kjer so:
+Mooreov avtomat je definiran kot nabor $(\Sigma, Q, q_0, F, \delta, O, G)$, kjer so:
 
-- $ \Sigma $ množica simbolov oz. abeceda,
-- $ Q $ množica stanj,
-- $ q_0 \in Q $ začetno stanje,
-- $ F \subseteq Q $ množica sprejemnih stanj,
-- $ \delta \colon Q \times \Sigma \to Q $ prehodna funkcija,
-- $ O $ množica izhodov (nizi) in
-- $ G \colon Q \times \Sigma \to O $ izhodna funkcija.
+- $\Sigma$ množica simbolov oz. abeceda,
+- $Q$ množica stanj,
+- $q_0 \in Q$ začetno stanje,
+- $F \subseteq Q$ množica sprejemnih stanj,
+- $\delta \colon Q \times \Sigma \to Q$ prehodna funkcija,
+- $O$ množica izhodov (nizi) in
+- $G \colon Q \times \Sigma \to O$ izhodna funkcija.
 
 ## Opis implementacije
 
